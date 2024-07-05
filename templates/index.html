@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTOBOOK</title>
+</head>
+<body>
+    <h1>Welcome to OTOBOOK</h1>
+    <button onclick="captureImage()">Capture Image</button>
+    <button onclick="fetchBooks()">Fetch Books</button>
+    <div id="result"></div>
+    <div id="books"></div>
+
+    <script>
+        async function captureImage() {
+            let response = await fetch('/capture', { method: 'POST' });
+            let data = await response.json();
+            let extractResponse = await fetch('/extract', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image_path: data.image_path })
+            });
+            let metadata = await extractResponse.json();
+            document.getElementById('result').innerText = JSON.stringify(metadata, null, 2);
+        }
+
+        async function fetchBooks() {
+            let response = await fetch('/books', { method: 'GET' });
+            let books = await response.json();
+            document.getElementById('books').innerText = JSON.stringify(books, null, 2);
+        }
+    </script>
+</body>
+</html>
