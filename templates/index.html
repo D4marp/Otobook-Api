@@ -56,7 +56,7 @@
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            white-space: pre-wrap; /* Preserve formatting */
+            white-space: pre-wrap;
         }
 
         input[type="text"] {
@@ -96,12 +96,11 @@
                 body: JSON.stringify({ image_path: data.image_path })
             });
             let result = await extractResponse.json();
-            let metadata = result.metadata;
-            document.getElementById('title').value = metadata.title;
-            document.getElementById('author').value = metadata.author;
-            document.getElementById('isbn').value = metadata.isbn;
-            document.getElementById('synopsis').value = metadata.synopsis;
-            document.getElementById('keywords').value = metadata.keywords;
+            document.getElementById('title').value = result.title;
+            document.getElementById('author').value = result.author;
+            document.getElementById('isbn').value = result.isbn;
+            document.getElementById('synopsis').value = result.synopsis;
+            document.getElementById('keywords').value = result.keywords;
             document.getElementById('result').innerText = JSON.stringify(result, null, 2);
         }
 

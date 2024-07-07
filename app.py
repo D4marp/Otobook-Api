@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from camera import capture_image
-from ocr import extract_text
-from gpt3 import get_metadata_and_summary
+from ocr import extract_text, classify_text
+from gpt3 import get_summary
 from database import init_db, save_metadata, fetch_metadata
 
 app = Flask(__name__)
@@ -20,8 +20,9 @@ def capture():
 def extract():
     image_path = request.json['image_path']
     text = extract_text(image_path)
-    result = get_metadata_and_summary(text)
-    return jsonify(result)
+    metadata = classify_text(text)
+    metadata['synopsis'] = get_summary(metadata['synopsis'])
+    return jsonify(metadata)
 
 @app.route('/books', methods=['GET'])
 def books():
