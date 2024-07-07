@@ -19,8 +19,7 @@ def capture():
 @app.route('/extract', methods=['POST'])
 def extract():
     image_path = request.json['image_path']
-    text = extract_text(image_path)
-    metadata = get_metadata(text)
+    metadata = extract_text(image_path)
     save_metadata(metadata)
     return jsonify(metadata)
 
@@ -28,6 +27,12 @@ def extract():
 def books():
     metadata = fetch_metadata()
     return jsonify(metadata)
+
+@app.route('/add_book', methods=['POST'])
+def add_book():
+    book_data = request.json
+    save_metadata(book_data)
+    return jsonify({'message': 'Book added successfully'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
